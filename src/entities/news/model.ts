@@ -4,10 +4,8 @@ import {
   createSelector,
   createSlice,
 } from '@reduxjs/toolkit';
-import axios from 'axios';
-import {config} from 'shared';
+
 import {UrlPaths, httpClient} from 'shared/api';
-import {useAppSelector} from 'shared/lib';
 
 const sliceKey = 'newsSlice';
 
