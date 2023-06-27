@@ -5,6 +5,9 @@ import type {
 
 export type RootStackParamList = {
   Home: undefined;
+  SignIn: undefined;
+  Main: undefined;
+  Auth: undefined;
 };
 
 export type ScreenProps<Screen extends keyof RootStackParamList> =
@@ -14,5 +17,8 @@ export type NavProp<Screen extends keyof RootStackParamList> =
   NativeStackNavigationProp<RootStackParamList, Screen>;
 
 export enum Screens {
+  AUTH_STACK = 'Auth',
+  MAIN_STACK = 'Main',
   HOME = 'Home',
+  SIGN_IN = 'SignIn',
 }
