@@ -31,7 +31,7 @@ const fetchNewsList = createAsyncThunk(`${sliceKey}/fetchList`, async () => {
   try {
     const response = await httpClient.get<NewsListItem[]>(UrlPaths.NewsList);
 
-    newsModel.setList(response.data);
+    response?.data && newsModel.setList(response.data);
   } catch (error: any) {
     console.error('fetchNewsList:', error.message);
   }

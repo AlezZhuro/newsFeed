@@ -1,16 +1,30 @@
-import axios from 'axios';
-import {config} from 'shared/config';
-import {token} from './interceptors';
+import {AxiosRequestConfig} from 'axios';
+import {ApiResponse, create} from 'apisauce';
 
-export const httpClient = axios.create({
+import {config} from 'shared/config';
+import {
+  failedAuthMiddleware,
+  setAuthHeaders,
+  successAuthMiddleware,
+} from './lib';
+
+export const httpClient = create({
   baseURL: config.api.baseURL,
   headers: {
     'Content-Type': 'application/json',
   },
 });
-token(httpClient);
+
+httpClient.addAsyncRequestTransform(async (response: AxiosRequestConfig) => {
+  await setAuthHeaders(response);
+});
+
+httpClient.addAsyncResponseTransform(async (response: ApiResponse<any>) => {
+  failedAuthMiddleware(response);
+  await successAuthMiddleware(response);
+});
 
 export enum UrlPaths {
   NewsList = '/news',
-  SignIn = '/sign_in',
+  SignIn = '/auth/sign_in',
 }

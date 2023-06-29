@@ -4,6 +4,9 @@ const config = {
   api: {
     baseURL: Config.BASE_URL,
   },
+  asyncStorage: {
+    headersKey: 'headers'
+  }
 };
 
 export {config};

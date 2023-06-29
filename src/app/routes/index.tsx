@@ -1,26 +1,30 @@
 import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {createStackNavigator} from '@react-navigation/stack';
 
-import {MainStackRouting} from './mainStack';
-import {AuthStackRouting} from './authStack';
 import {RootStackParamList, Screens} from 'shared/routes';
+import {HomeScreen, SignInScreen} from 'screens';
 
-const RootStack = createNativeStackNavigator<RootStackParamList>();
+const RootStack = createStackNavigator<RootStackParamList>();
 
 export const Routing = () => {
   return (
     <NavigationContainer>
-      <RootStack.Navigator initialRouteName={Screens.AUTH_STACK}>
+      <RootStack.Navigator initialRouteName={Screens.SIGN_IN}>
         <RootStack.Screen
-          name={Screens.MAIN_STACK}
-          component={MainStackRouting}
+          name={Screens.HOME}
+          component={HomeScreen}
+          options={{
+            headerShown: true,
+            gestureEnabled: true,
+          }}
         />
         <RootStack.Screen
-          name={Screens.AUTH_STACK}
-          component={AuthStackRouting}
+          name={Screens.SIGN_IN}
+          component={SignInScreen}
           options={{
-            headerShown: false
+            headerShown: false,
+            animationTypeForReplace: 'pop',
           }}
         />
       </RootStack.Navigator>
