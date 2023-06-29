@@ -6,6 +6,7 @@ import Toast from 'react-native-toast-message';
 import {config} from 'shared/config';
 import {UrlPaths} from '.';
 import {AuthHeaders, SignInError} from './types';
+import {Screens, customNavigatior} from 'shared/routes';
 
 const successAuthMiddleware = async (response: ApiResponse<any>) => {
   try {
@@ -42,6 +43,14 @@ const failedAuthMiddleware = (response: ApiResponse<any>) => {
       }, ''),
       visibilityTime: 7000,
     });
+    failedAuthRedirectMiddleware(response);
+  }
+};
+
+const failedAuthRedirectMiddleware = async (response: ApiResponse<any>) => {
+  if (!response.config?.url?.includes(UrlPaths.SignIn)) {
+    await AsyncStorage.removeItem(config.asyncStorage.headersKey);
+    customNavigatior.reset([{name: Screens.SIGN_IN}]);
   }
 };
 

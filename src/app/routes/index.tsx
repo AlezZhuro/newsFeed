@@ -2,14 +2,14 @@ import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 
-import {RootStackParamList, Screens} from 'shared/routes';
+import {RootStackParamList, Screens, navigationRef} from 'shared/routes';
 import {HomeScreen, SignInScreen} from 'screens';
 
 const RootStack = createStackNavigator<RootStackParamList>();
 
 export const Routing = () => {
   return (
-    <NavigationContainer>
+    <NavigationContainer ref={navigationRef}>
       <RootStack.Navigator
         initialRouteName={Screens.HOME}
         screenOptions={{
