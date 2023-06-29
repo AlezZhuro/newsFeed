@@ -12,3 +12,7 @@ export type AuthHeaders = {
 export type AuthSuccessDTO<T> = {
   user: T
 }
+
+export type NewsListDTO<T> = {
+  news: T[]
+}

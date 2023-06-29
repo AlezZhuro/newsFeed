@@ -10,7 +10,11 @@ const RootStack = createStackNavigator<RootStackParamList>();
 export const Routing = () => {
   return (
     <NavigationContainer>
-      <RootStack.Navigator initialRouteName={Screens.SIGN_IN}>
+      <RootStack.Navigator
+        initialRouteName={Screens.HOME}
+        screenOptions={{
+          cardStyle: {backgroundColor: '#ffffff'},
+        }}>
         <RootStack.Screen
           name={Screens.HOME}
           component={HomeScreen}

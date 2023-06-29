@@ -6,12 +6,18 @@ import {
 } from '@reduxjs/toolkit';
 
 import {UrlPaths, httpClient} from 'shared/api';
+import {NewsListDTO} from 'shared/api/types';
 
 const sliceKey = 'newsSlice';
 
 const initialState: StateType = {
   selectedItem: null,
   list: [],
+  pagination: {
+    page: 1,
+    perPage: 10,
+    totalItems: 10,
+  },
 };
 
 const newsSlice = createSlice({
@@ -24,18 +30,31 @@ const newsSlice = createSlice({
     setSelectedItem: (state, {payload}: PayloadAction<NewsListItem>) => {
       state.selectedItem = payload;
     },
+    setPage: (state, {payload}: PayloadAction<number>) => {
+      state.pagination.page = payload;
+    },
+    setPagination: (state, {payload}: PayloadAction<any>) => {
+      state.pagination = {...state.pagination, ...payload};
+    },
   },
 });
 
-const fetchNewsList = createAsyncThunk(`${sliceKey}/fetchList`, async () => {
-  try {
-    const response = await httpClient.get<NewsListItem[]>(UrlPaths.NewsList);
-
-    response?.data && newsModel.setList(response.data);
-  } catch (error: any) {
-    console.error('fetchNewsList:', error.message);
-  }
-});
+const fetchNewsList = createAsyncThunk(
+  `${sliceKey}/fetchNewsList`,
+  async (_, {dispatch}) => {
+    try {
+      const response = await httpClient.get<NewsListDTO<NewsListItem>>(
+        UrlPaths.NewsList,
+        {page: 1},
+      );
+      if (response.ok) {
+        response?.data && dispatch(newsModel.setList(response.data.news));
+      }
+    } catch (error: any) {
+      console.error('fetchNewsList:', error.message);
+    }
+  },
+);
 
 const newsSelectedItemSelector = createSelector(
   (state: RootState) => state.news.selectedItem,
@@ -61,6 +80,11 @@ export const newsModel = {
 type StateType = {
   selectedItem: null | NewsListItem;
   list: NewsListItem[];
+  pagination: {
+    page: number;
+    totalItems: number;
+    perPage: number;
+  };
 };
 
 export type NewsListItem = {
@@ -73,6 +97,10 @@ export type NewsListItem = {
   created_at: Date;
   category: null | string;
   icon: null | string;
-  model_name: string;
+  model_name: keyof ModelName;
   table_name: string;
 };
+
+enum ModelName {
+  News = 'News',
+}
