@@ -97,7 +97,7 @@ export type NewsListItem = {
   created_at: Date;
   category: null | string;
   icon: null | string;
-  model_name: keyof ModelName;
+  model_name: `${ModelName}`;
   table_name: string;
 };
 
