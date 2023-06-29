@@ -1,24 +1,31 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import {Card, Text} from 'react-native-paper';
 import {useWindowDimensions} from 'react-native';
 import RenderHtml from 'react-native-render-html';
+import tw from 'twrnc';
 
 import {NewsListItem} from '../model';
 
-interface ListItemProps {}
+interface ListItemProps {
+  pressHandler: (item: NewsListItem) => void;
+}
 
 export const ListItem: React.FC<ListItemProps & NewsListItem> = ({
-  title,
-  image_url,
-  short_text,
+  pressHandler,
+  ...item
 }) => {
   const {width} = useWindowDimensions();
+
+  const onPress = useCallback(() => {
+    pressHandler(item);
+  }, [item]);
+
   return (
-    <Card>
+    <Card onPress={onPress}>
       <Card.Content>
-        <Text variant="titleLarge">{title}</Text>
-        <Card.Cover source={{uri: image_url}} />
-        <RenderHtml source={{html: short_text}} contentWidth={width} />
+        <Text variant="titleLarge">{item.title}</Text>
+        <Card.Cover source={{uri: item.image_url}} style={tw`my-2`} />
+        <RenderHtml source={{html: item.short_text}} contentWidth={width} />
       </Card.Content>
     </Card>
   );
