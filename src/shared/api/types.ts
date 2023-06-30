@@ -14,5 +14,5 @@ export type AuthSuccessDTO<T> = {
 }
 
 export type NewsListDTO<T> = {
-  news: T[]
+  news: T
 }

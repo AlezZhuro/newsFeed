@@ -14,6 +14,7 @@ export const Routing = () => {
         initialRouteName={Screens.HOME}
         screenOptions={{
           cardStyle: {backgroundColor: '#ffffff'},
+          headerBackTitleVisible: false,
         }}>
         <RootStack.Screen
           name={Screens.HOME}

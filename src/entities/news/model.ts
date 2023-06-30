@@ -27,7 +27,7 @@ const newsSlice = createSlice({
     setList: (state, {payload}: PayloadAction<NewsListItem[]>) => {
       state.list = payload;
     },
-    setSelectedItem: (state, {payload}: PayloadAction<NewsListItem>) => {
+    setSelectedItem: (state, {payload}: PayloadAction<NewsItem>) => {
       state.selectedItem = payload;
     },
     setPage: (state, {payload}: PayloadAction<number>) => {
@@ -43,7 +43,7 @@ const fetchNewsList = createAsyncThunk(
   `${sliceKey}/fetchNewsList`,
   async (_, {dispatch}) => {
     try {
-      const response = await httpClient.get<NewsListDTO<NewsListItem>>(
+      const response = await httpClient.get<NewsListDTO<NewsListItem[]>>(
         UrlPaths.NewsList,
         {page: 1},
       );
@@ -52,6 +52,23 @@ const fetchNewsList = createAsyncThunk(
       }
     } catch (error: any) {
       console.error('fetchNewsList:', error.message);
+    }
+  },
+);
+
+const fetchNewsByID = createAsyncThunk(
+  `${sliceKey}/fetchNewsByID`,
+  async (id: number, {dispatch, fulfillWithValue}) => {
+    try {
+      const response = await httpClient.get<NewsListDTO<NewsItem>>(
+        `${UrlPaths.NewsList}/${id}`,
+      );
+
+      if (response.ok) {
+        return fulfillWithValue(response.data?.news);
+      }
+    } catch (error: any) {
+      console.error('fetchNewsByID:', error.message);
     }
   },
 );
@@ -75,10 +92,11 @@ export const newsModel = {
     item: newsSelectedItemSelector,
   },
   fetchNewsList,
+  fetchNewsByID,
 };
 
 type StateType = {
-  selectedItem: null | NewsListItem;
+  selectedItem: null | NewsItem;
   list: NewsListItem[];
   pagination: {
     page: number;
@@ -100,6 +118,8 @@ export type NewsListItem = {
   model_name: `${ModelName}`;
   table_name: string;
 };
+
+export interface NewsItem extends NewsListItem {}
 
 enum ModelName {
   News = 'News',
