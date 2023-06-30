@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useLayoutEffect} from 'react';
 import {Text, View} from 'react-native';
 import tw from 'twrnc';
 
@@ -11,7 +11,13 @@ interface HomeScreenProps {}
 
 export const HomeScreen: React.FC<
   HomeScreenProps & ScreenProps<Screens.HOME>
-> = () => {
+> = ({navigation}) => {
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      title: 'Lates news',
+    });
+  }, [navigation]);
+
   return (
     <SafeAreaView
       edges={['bottom', 'left', 'right']}

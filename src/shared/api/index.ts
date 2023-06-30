@@ -20,7 +20,7 @@ httpClient.addAsyncRequestTransform(async (response: AxiosRequestConfig) => {
 });
 
 httpClient.addAsyncResponseTransform(async (response: ApiResponse<any>) => {
-  failedAuthMiddleware(response);
+  await failedAuthMiddleware(response);
   await successAuthMiddleware(response);
 });
 

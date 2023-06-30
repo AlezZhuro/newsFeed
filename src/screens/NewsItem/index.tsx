@@ -26,7 +26,7 @@ export const NewsItemScreen: React.FC<
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      headerTitle: '',
+      title: new Date(route.params.created_at).toLocaleDateString(),
     });
   }, [navigation]);
 

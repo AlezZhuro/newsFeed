@@ -5,7 +5,7 @@ import {
   createSlice,
 } from '@reduxjs/toolkit';
 
-import {UrlPaths, httpClient} from 'shared';
+import {UrlPaths, httpClient, redirectToSignScreen} from 'shared';
 import {AuthSuccessDTO} from 'shared/api/types';
 
 const sliceKey = 'authSlice';
@@ -28,14 +28,14 @@ const authSlice = createSlice({
     setIsLogged: (state, {payload}: PayloadAction<boolean>) => {
       state.isLogged = payload;
     },
-    logout: state => {
+    logoutAction: state => {
       state = initialState;
     },
   },
 });
 
 const login = createAsyncThunk(
-  sliceKey,
+  `${sliceKey}/login`,
   async ({email, password}: {email: string; password: string}) => {
     try {
       const res = await httpClient.post<AuthSuccessDTO<UserType>>(
@@ -54,8 +54,18 @@ const login = createAsyncThunk(
   },
 );
 
+const logout = createAsyncThunk(`${sliceKey}/logout`, async (_, {dispatch}) => {
+  dispatch(authModel.logoutAction());
+  await redirectToSignScreen();
+});
+
 const isLoggedSelector = createSelector(
   (state: RootState) => state.auth.isLogged,
+  item => item,
+);
+
+const userSelector = createSelector(
+  (state: RootState) => state.auth.user,
   item => item,
 );
 
@@ -63,8 +73,10 @@ export const authModel = {
   ...authSlice.actions,
   selectors: {
     isLogged: isLoggedSelector,
+    user: userSelector,
   },
   login,
+  logout,
 };
 export const authReducer = authSlice.reducer;
 

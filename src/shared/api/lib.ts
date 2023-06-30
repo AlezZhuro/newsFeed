@@ -4,9 +4,9 @@ import {AxiosRequestConfig} from 'axios';
 import Toast from 'react-native-toast-message';
 
 import {config} from 'shared/config';
+import {redirectToSignScreen} from 'shared/lib/';
 import {UrlPaths} from '.';
 import {AuthHeaders, SignInError} from './types';
-import {Screens, customNavigatior} from 'shared/routes';
 
 const successAuthMiddleware = async (response: ApiResponse<any>) => {
   try {
@@ -31,7 +31,7 @@ const successAuthMiddleware = async (response: ApiResponse<any>) => {
   }
 };
 
-const failedAuthMiddleware = (response: ApiResponse<any>) => {
+const failedAuthMiddleware = async (response: ApiResponse<any>) => {
   if (response.status === 401 && response.data) {
     const dataWithErrors = response.data as SignInError;
     Toast.show({
@@ -43,14 +43,13 @@ const failedAuthMiddleware = (response: ApiResponse<any>) => {
       }, ''),
       visibilityTime: 7000,
     });
-    failedAuthRedirectMiddleware(response);
+    await failedAuthRedirectMiddleware(response);
   }
 };
 
 const failedAuthRedirectMiddleware = async (response: ApiResponse<any>) => {
   if (!response.config?.url?.includes(UrlPaths.SignIn)) {
-    await AsyncStorage.removeItem(config.asyncStorage.headersKey);
-    customNavigatior.reset([{name: Screens.SIGN_IN}]);
+    await redirectToSignScreen();
   }
 };
 
@@ -58,7 +57,8 @@ const setAuthHeaders = async (response: AxiosRequestConfig) => {
   const headersString = await AsyncStorage.getItem(
     config.asyncStorage.headersKey,
   );
-  if (headersString) {
+
+  if (headersString !== null) {
     const headers: AuthHeaders = JSON.parse(headersString);
     response.headers = {...response.headers, ...headers};
   }

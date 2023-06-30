@@ -4,6 +4,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 
 import {RootStackParamList, Screens, navigationRef} from 'shared/routes';
 import {HomeScreen, SignInScreen, NewsItemScreen} from 'screens';
+import {AppHeader} from 'widgets';
 
 const RootStack = createStackNavigator<RootStackParamList>();
 
@@ -13,6 +14,7 @@ export const Routing = () => {
       <RootStack.Navigator
         initialRouteName={Screens.HOME}
         screenOptions={{
+          header: props => <AppHeader title={props.options.title} {...props} />,
           cardStyle: {backgroundColor: '#ffffff'},
           headerBackTitleVisible: false,
         }}>
@@ -37,7 +39,6 @@ export const Routing = () => {
           component={SignInScreen}
           options={{
             headerShown: false,
-            animationTypeForReplace: 'pop',
           }}
         />
       </RootStack.Navigator>
