@@ -27,4 +27,5 @@ httpClient.addAsyncResponseTransform(async (response: ApiResponse<any>) => {
 export enum UrlPaths {
   NewsList = '/news',
   SignIn = '/auth/sign_in',
+  RefreshUser = '/users/refresh_current_user',
 }

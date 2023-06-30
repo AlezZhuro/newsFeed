@@ -62,7 +62,7 @@ const refreshUser = createAsyncThunk(
   async (_, {dispatch}) => {
     try {
       const res = await httpClient.get<AuthSuccessDTO<UserType>>(
-        '/users/refresh_current_user',
+        UrlPaths.RefreshUser,
       );
       if (res.ok && res.data) {
         dispatch(authModel.successAuth(res.data.user));
