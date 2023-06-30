@@ -57,6 +57,22 @@ const logout = createAsyncThunk(`${sliceKey}/logout`, async (_, {dispatch}) => {
   await redirectToSignScreen();
 });
 
+const refreshUser = createAsyncThunk(
+  `${sliceKey}/refreshUser`,
+  async (_, {dispatch}) => {
+    try {
+      const res = await httpClient.get<AuthSuccessDTO<UserType>>(
+        '/users/refresh_current_user',
+      );
+      if (res.ok && res.data) {
+        dispatch(authModel.successAuth(res.data.user));
+      }
+    } catch (error: any) {
+      // TODO: add handler
+    }
+  },
+);
+
 const isLoggedSelector = createSelector(
   (state: RootState) => state.auth.isLogged,
   item => item,
@@ -75,6 +91,7 @@ export const authModel = {
   },
   login,
   logout,
+  refreshUser,
 };
 export const authReducer = authSlice.reducer;
 
