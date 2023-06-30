@@ -20,10 +20,8 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     successAuth: (state, {payload}: PayloadAction<UserType>) => {
-      state = {
-        isLogged: true,
-        user: payload,
-      };
+      state.isLogged = true;
+      state.user = payload;
     },
     setIsLogged: (state, {payload}: PayloadAction<boolean>) => {
       state.isLogged = payload;
@@ -36,7 +34,7 @@ const authSlice = createSlice({
 
 const login = createAsyncThunk(
   `${sliceKey}/login`,
-  async ({email, password}: {email: string; password: string}) => {
+  async ({email, password}: {email: string; password: string}, {dispatch}) => {
     try {
       const res = await httpClient.post<AuthSuccessDTO<UserType>>(
         UrlPaths.SignIn,
@@ -44,7 +42,7 @@ const login = createAsyncThunk(
       );
 
       if (res.ok && res.data) {
-        authModel.successAuth(res.data.user);
+        dispatch(authModel.successAuth(res.data.user));
         return true;
       }
     } catch (error: any) {
