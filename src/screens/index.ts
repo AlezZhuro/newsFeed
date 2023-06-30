@@ -1,3 +1,3 @@
 export * from './Home';
 export * from './SignIn';
-export * from './NewsItem';
+export * from './News';

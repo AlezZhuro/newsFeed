@@ -3,7 +3,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 
 import {RootStackParamList, Screens, navigationRef} from 'shared/routes';
-import {HomeScreen, SignInScreen, NewsItemScreen} from 'screens';
+import {HomeScreen, SignInScreen, NewsScreen} from 'screens';
 import {AppHeader} from 'widgets';
 
 const RootStack = createStackNavigator<RootStackParamList>();
@@ -28,7 +28,7 @@ export const Routing = () => {
         />
         <RootStack.Screen
           name={Screens.NEWS_ITEM}
-          component={NewsItemScreen}
+          component={NewsScreen}
           options={{
             headerShown: true,
             gestureEnabled: true,
