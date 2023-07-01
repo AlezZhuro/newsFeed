@@ -4,7 +4,13 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 
 import {RootStackParamList, Screens, navigationRef} from 'shared/routes';
-import {HomeScreen, SignInScreen, NewsScreen, StartScreen} from 'screens';
+import {
+  HomeScreen,
+  SignInScreen,
+  NewsScreen,
+  StartScreen,
+  Notifee,
+} from 'screens';
 import {AppHeader} from 'widgets';
 
 const RootStack = createStackNavigator<RootStackParamList>();
@@ -61,6 +67,14 @@ export const Routing = () => {
             headerShown: false,
             cardShadowEnabled: false,
             cardStyleInterpolator: forFade,
+          }}
+        />
+        <RootStack.Screen
+          name={Screens.NOTIFEE}
+          component={Notifee}
+          options={{
+            presentation: 'modal',
+            headerShown: false,
           }}
         />
       </RootStack.Navigator>

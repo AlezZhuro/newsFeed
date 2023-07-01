@@ -6,6 +6,17 @@ export type RootStackParamList = {
   [Screens.START]: undefined;
   [Screens.SIGN_IN]: undefined;
   [Screens.NEWS_ITEM]: NewsListItem;
+  [Screens.NOTIFEE]:
+    | undefined
+    | {
+        data: {
+          info: string;
+          imgUrl: string;
+          id: number;
+        };
+        body: string;
+        title: string;
+      };
 };
 
 export type ScreenProps<Screen extends keyof RootStackParamList> =
@@ -19,4 +30,5 @@ export enum Screens {
   SIGN_IN = 'SignIn',
   NEWS_ITEM = 'NewsItem',
   START = 'Start',
+  NOTIFEE = 'Notifee',
 }
