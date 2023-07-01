@@ -5,7 +5,12 @@ import {
   createSlice,
 } from '@reduxjs/toolkit';
 
-import {UrlPaths, httpClient, redirectToSignScreen} from 'shared';
+import {
+  UrlPaths,
+  httpClient,
+  redirectToSignScreen,
+  showAlertWithError,
+} from 'shared';
 import {AuthSuccessDTO} from 'shared/api/types';
 
 const sliceKey = 'authSlice';
@@ -46,7 +51,6 @@ const login = createAsyncThunk(
         return true;
       }
     } catch (error: any) {
-      console.error({loginError: error});
       return false;
     }
   },
@@ -68,7 +72,7 @@ const refreshUser = createAsyncThunk(
         dispatch(authModel.successAuth(res.data.user));
       }
     } catch (error: any) {
-      // TODO: add handler
+      showAlertWithError(error);
     }
   },
 );

@@ -7,17 +7,13 @@ import {
 
 import {UrlPaths, httpClient} from 'shared/api';
 import {NewsListDTO} from 'shared/api/types';
+import {showAlertWithError} from 'shared/lib';
 
 const sliceKey = 'newsSlice';
 
 const initialState: StateType = {
   selectedItem: null,
   list: [],
-  pagination: {
-    page: 1,
-    perPage: 10,
-    totalItems: 10,
-  },
 };
 
 const newsSlice = createSlice({
@@ -29,12 +25,6 @@ const newsSlice = createSlice({
     },
     setSelectedItem: (state, {payload}: PayloadAction<NewsItem>) => {
       state.selectedItem = payload;
-    },
-    setPage: (state, {payload}: PayloadAction<number>) => {
-      state.pagination.page = payload;
-    },
-    setPagination: (state, {payload}: PayloadAction<any>) => {
-      state.pagination = {...state.pagination, ...payload};
     },
   },
 });
@@ -51,14 +41,14 @@ const fetchNewsList = createAsyncThunk(
         response?.data && dispatch(newsModel.setList(response.data.news));
       }
     } catch (error: any) {
-      console.error('fetchNewsList:', error.message);
+      showAlertWithError(error);
     }
   },
 );
 
 const fetchNewsByID = createAsyncThunk(
   `${sliceKey}/fetchNewsByID`,
-  async (id: number, {dispatch, fulfillWithValue}) => {
+  async (id: number, {fulfillWithValue}) => {
     try {
       const response = await httpClient.get<NewsListDTO<NewsItem>>(
         `${UrlPaths.NewsList}/${id}`,
@@ -68,7 +58,7 @@ const fetchNewsByID = createAsyncThunk(
         return fulfillWithValue(response.data?.news);
       }
     } catch (error: any) {
-      console.error('fetchNewsByID:', error.message);
+      showAlertWithError(error);
     }
   },
 );
@@ -98,11 +88,6 @@ export const newsModel = {
 type StateType = {
   selectedItem: null | NewsItem;
   list: NewsListItem[];
-  pagination: {
-    page: number;
-    totalItems: number;
-    perPage: number;
-  };
 };
 
 export type NewsListItem = {
