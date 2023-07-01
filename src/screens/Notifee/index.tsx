@@ -1,21 +1,30 @@
 import React from 'react';
-import {Button, View} from 'react-native';
-
+import {Alert, Button, View} from 'react-native';
 import {Card, Text} from 'react-native-paper';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {ScreenProps, Screens, customNavigatior} from 'shared';
 import tw from 'twrnc';
+
+import {authModel} from 'entities';
+import {ScreenProps, Screens, customNavigatior, useAppSelector} from 'shared';
 
 interface NotifeeProps {}
 
 export const Notifee: React.FC<NotifeeProps & ScreenProps<Screens.NOTIFEE>> = ({
   route,
 }) => {
+  const isLogged = useAppSelector(authModel.selectors.isLogged);
   const onPress = () => {
-    customNavigatior.replace({
-      name: Screens.NEWS_ITEM,
-      params: {id: route.params?.data.id},
-    });
+    isLogged
+      ? customNavigatior.replace({
+          name: Screens.NEWS_ITEM,
+          params: {id: route.params?.data.id},
+        })
+      : Alert.alert('Ooops...', 'You need signin', [
+          {
+            text: 'Go to sign in',
+            onPress: () => customNavigatior.navigate({name: Screens.SIGN_IN}),
+          },
+        ]);
   };
 
   return (
