@@ -31,7 +31,7 @@ export const Routing = () => {
       <RootStack.Navigator
         initialRouteName={Screens.START}
         screenOptions={{
-          header: props => <AppHeader title={props.options.title} {...props} />,
+          header: props => <AppHeader {...props} />,
           cardStyle: {backgroundColor: '#ffffff'},
           headerBackTitleVisible: false,
         }}>

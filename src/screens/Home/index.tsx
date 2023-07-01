@@ -11,13 +11,7 @@ interface HomeScreenProps {}
 
 export const HomeScreen: React.FC<
   HomeScreenProps & ScreenProps<Screens.HOME>
-> = ({navigation}) => {
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      title: 'Lates news',
-    });
-  }, [navigation]);
-
+> = () => {
   return (
     <SafeAreaView
       edges={['bottom', 'left', 'right']}

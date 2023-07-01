@@ -1,16 +1,14 @@
 import React from 'react';
-import {Appbar, Avatar} from 'react-native-paper';
+import {Appbar, Avatar, Text} from 'react-native-paper';
 import {StackHeaderProps} from '@react-navigation/stack';
 
 import {authModel} from 'entities';
-import {useAppDispatch, useAppSelector} from 'shared';
+import {Screens, useAppDispatch, useAppSelector} from 'shared';
 
-type Props = {
-  title?: string;
-};
+type Props = {};
 
 export const AppHeader: React.FC<Props & StackHeaderProps> = React.memo(
-  ({navigation, title}) => {
+  ({navigation, route}) => {
     const dispatch = useAppDispatch();
     const user = useAppSelector(authModel.selectors.user);
 
@@ -22,8 +20,11 @@ export const AppHeader: React.FC<Props & StackHeaderProps> = React.memo(
 
     return (
       <Appbar.Header>
-        {navigation.canGoBack() && <Appbar.BackAction onPress={goBack} />}
-        <Appbar.Content title={title ?? ''} />
+        {route.name === Screens.NEWS_ITEM && navigation.canGoBack() && (
+          <Appbar.BackAction onPress={goBack} />
+        )}
+
+        {user && <Appbar.Content title={user.username} />}
         {user && (
           <Avatar.Image size={24} source={{uri: user.avatar_cropped_big_url}} />
         )}
