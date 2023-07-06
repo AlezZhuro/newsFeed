@@ -67,6 +67,7 @@ export const SignIn: React.FC<LogInProps> = () => {
               <Text style={tw`text-xl text-center`}>Login</Text>
             </View>
             <TextInput
+              testID="emailInput"
               name="email"
               value={email}
               onChangeField={onChangeText}
@@ -79,6 +80,7 @@ export const SignIn: React.FC<LogInProps> = () => {
               keyboardType="email-address"
             />
             <PasswordInput
+              testID="passInput"
               name="password"
               value={password}
               onChangeField={onChangeText}

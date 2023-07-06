@@ -99,12 +99,12 @@ export const authModel = {
 };
 export const authReducer = authSlice.reducer;
 
-type StateType = {
+export type StateType = {
   isLogged: boolean;
   user: UserType | undefined;
 };
 
-type UserType = {
+export type UserType = {
   id: number;
   username: string;
   avatar_url: string;

@@ -85,7 +85,7 @@ export const newsModel = {
   fetchNewsByID,
 };
 
-type StateType = {
+export type StateType = {
   selectedItem: null | NewsItem;
   list: NewsListItem[];
 };
